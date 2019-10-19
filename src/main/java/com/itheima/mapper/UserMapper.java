@@ -1,6 +1,6 @@
 package com.itheima.mapper;
 
-import com.itheima.domain.User;
+import com.itheima.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface UserMapper {
     /**
      * TODO 查询用户总数
      */
-    Integer getUseTotalNumber();
+    Integer getUserTotalNumber();
     /**
      * TODO 修改更新用户数据
      */

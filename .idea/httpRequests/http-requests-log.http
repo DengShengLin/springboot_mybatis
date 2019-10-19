@@ -1,0 +1,44 @@
+GET http://localhost:8080/v1/users/list/condition?id=1
+
+<> 2019-10-19T051108.200.json
+
+###
+
+GET http://localhost:8080/v1/users/list/condition?id=1
+
+###
+
+GET http://localhost:8081/v1/users/list/condition?id=1
+
+<> 2019-10-19T050730.200.json
+
+###
+
+GET http://localhost:8081/v1/users/list/condition
+
+<> 2019-10-19T050704.200.json
+
+###
+
+GET http://localhost:8081/v1/users/list
+
+<> 2019-10-19T050600.200.json
+
+###
+
+GET http://localhost:8080/v1/users/list
+
+###
+
+GET http://localhost:8080/v1/users/list
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+GET http://localhost:8080/v1/users/list
+Accept: */*
+Cache-Control: no-cache
+
+###
+

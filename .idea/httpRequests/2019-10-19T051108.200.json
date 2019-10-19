@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "userName": "邓11",
+    "userPassword": "123",
+    "userNickname": "一一一",
+    "userPhoneNo": "15994969293",
+    "userGender": "女",
+    "userMail": "956923045@qq.com",
+    "userBirthday": "1997-12-30",
+    "userState": 1,
+    "userIsAdministrator": 0,
+    "userSort": "未分类",
+    "userDepartment": "暂无部门",
+    "userPrivilege": "暂无权限限制",
+    "userMotto": "这是我的个性签名",
+    "userHobby": "这是我的爱好描述",
+    "userNewpassword": "456"
+  }
+]

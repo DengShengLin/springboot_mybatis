@@ -1,7 +1,8 @@
 package com.itheima.controller;
 
-import com.itheima.domain.User;
+import com.github.pagehelper.PageHelper;
 import com.itheima.mapper.UserMapper;
+import com.itheima.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     private List<User> users;
-    private User user =new User();
+    private User user = new User();
 
     /*
      * @Description //TODO 查询所有用户 OK
@@ -45,14 +46,14 @@ public class UserController {
      * @Param
      * @return
      **/
-    @RequestMapping(value = "queryUserList",method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("/list")
     public ResponseEntity<List<User>> queryUserList() {
+//        PageHelper.startPage(1,5);
         //执行sql语句
         users = this.userMapper.queryUserList();
         if (null != users) {
             //响应数据
-            return new ResponseEntity<List<User>>(users,HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
         }
         //500
         return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,17 +61,15 @@ public class UserController {
 
     /*
      * @Description //TODO 单条件查询指定用户 OK
-     *                 多条件只对第一个条件有效
      * @Date 2019/10/15 2:12
      * @Param
      * @return
      **/
-    @RequestMapping(value = "queryUserSingleCondition",method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("list/condition")
     public ResponseEntity<List<User>> queryUserSingleCondition(User conditionUser) {
         //测试开始
-        conditionUser.setId(1);
-        conditionUser.setUserName("邓22");
+//        conditionUser.setId(1);
+//        conditionUser.setUserName("邓22");
         //测试结束
         //“将conditionUser传来的条件注入到user中”
         user = conditionUser;
@@ -78,7 +77,7 @@ public class UserController {
         users = this.userMapper.queryUserSingleCondition(user);
         if (null != users) {
             //
-            return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
         }
         //500
         return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -90,15 +89,14 @@ public class UserController {
      * @Param
      * @return
      **/
-    @RequestMapping(value = "getUseTotalNumber",method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Integer> getUseTotalNumber() {
+    @GetMapping("/total")
+    public ResponseEntity<Integer> getUserTotalNumber() {
 
         //执行sql语句
-        Integer i = this.userMapper.getUseTotalNumber();
+        Integer i = this.userMapper.getUserTotalNumber();
         if (i >= 0) {
             //
-            return new ResponseEntity<Integer>(i,HttpStatus.OK);
+            return new ResponseEntity<Integer>(i, HttpStatus.OK);
         }
         //500
         return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,24 +104,22 @@ public class UserController {
 
     /*
      * @Description //TODO 更新用户数据 OK
-     *                 -------------------用PUT好像不行！！
      * @Date 2019/10/15 2:23
      * @Param
      * @return
      **/
-    @RequestMapping(value = "updateUserInfomation",method = RequestMethod.GET)
-    @ResponseBody
+    @PutMapping("/")
     public ResponseEntity<Integer> updateUserInfomation(User user1) {
         //测试开始
-        user1.setId(7);
-        user1.setUserPassword("123456");
-        user1.setUserNickname("qiqi");
+//        user1.setId(7);
+//        user1.setUserPassword("123456");
+//        user1.setUserNickname("qiqi");
         //测试结束
-        user=user1;
+        user = user1;
         Integer i = this.userMapper.updateUserInfomation(user);
         if (i >= 0) {
             //
-            return new ResponseEntity<Integer>(i,HttpStatus.OK);
+            return new ResponseEntity<Integer>(i, HttpStatus.OK);
         }
         //500
         return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -131,23 +127,21 @@ public class UserController {
 
     /*
      * @Description //TODO 添加用户信息 OK
-     *                 --------------POST也不行
      * @Date 2019/10/15 2:30
      * @Param
      * @return
      **/
-    @RequestMapping(value = "insertUserInformation",method = RequestMethod.GET)
-    @ResponseBody
+    @PostMapping("/insert")
     public ResponseEntity<Integer> insertUserInformation(User user1) {
         //测试开始
-        user1.setUserName("邓1010");
-        user1.setUserPassword("999");
+//        user1.setUserName("邓1010");
+//        user1.setUserPassword("999");
         //测试结束
-        user=user1;
+        user = user1;
         Integer i = this.userMapper.insertUserInformation(user);
         if (i > 0) {
             //
-            return new ResponseEntity<Integer>(i,HttpStatus.CREATED);
+            return new ResponseEntity<Integer>(i, HttpStatus.CREATED);
         }
         //500
         return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -161,18 +155,17 @@ public class UserController {
      * @Param
      * @return
      **/
-    @RequestMapping(value = "deleteUserInfomation",method = RequestMethod.GET)
-    @ResponseBody
+    @DeleteMapping("/delete")
     public ResponseEntity<Integer> deleteUserInfomation(User user1) {
         //测试开始
-        user1.setId(10);
-        user1.setUserName("邓1010");
+//        user1.setId(10);
+//        user1.setUserName("邓1010");
         //测试结束
-        user=user1;
+        user = user1;
         Integer i = this.userMapper.deleteUserInfomation(user);
         if (i > 0) {
             //
-            return new ResponseEntity<Integer>(i,HttpStatus.CREATED);
+            return new ResponseEntity<Integer>(i, HttpStatus.CREATED);
         }
         //500
         return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -180,25 +173,47 @@ public class UserController {
 
     /*
      * @Description //TODO 批量删除指定ID用户
-     *                 --------------DELETE不行
+     *                 json传入List<Integer>??
      * @Date 2019/10/15 2:38
      * @Param
      * @return
      **/
-    @RequestMapping(value = "deleteMoreUserById",method = RequestMethod.GET)
-    @ResponseBody
+    @DeleteMapping("delete/more")
     public ResponseEntity<Integer> deleteMoreUserById(List<Integer> ids) {
         //测试开始
-        ids.add(8);
-        ids.add(9);
+//        ids.add(8);
+//        ids.add(9);
         //测试结束
         //执行sql语句
         Integer i = this.userMapper.deleteMoreUserById(ids);
         if (i > 0) {
             //
-            return new ResponseEntity<Integer>(i,HttpStatus.OK);
+            return new ResponseEntity<Integer>(i, HttpStatus.OK);
         }
         //500
         return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+    @GetMapping("list/{pageNum}")
+    public ResponseEntity<List<User>> queryUserListPage(@PathVariable Integer pageNum,
+                                                        @RequestParam(defaultValue = "5",value = "pageSize") Integer pageSize) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        //执行sql语句
+        users = this.userMapper.queryUserList();
+
+        for (User user : users) {
+            System.out.println(user);
+        }
+        if (!users.isEmpty()) {
+            //
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        }
+        //500
+        return new ResponseEntity<List<User>>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    User u = new User();
+
 }
